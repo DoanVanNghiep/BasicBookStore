@@ -9,10 +9,10 @@ public class Constant {
 	public static final byte NOT_AVAIABLE_ORDER_STATUS = 6; //trạng thái hàng không đủ
 	
 	
-	public static final String REJECT_ACTION = "Khách trả lại hàng";
-	public static final String DELIVERING_ACTION = "Đang chờ giao";
-	public static final String DELIVERED_ACTION = "Đã giao";
-	public static final String WAITING_APPROVE_ACTION = " Đang chờ xác nhận ";
+	public static final String WAITING_APPROVE_ACTION="waiting";
+	public static final String DELEVERING_ACTION="delivering";
+	public static final String DELEVERED_ACTION="delivered";
+	public static final String REJECT_ACTION="reject";
 	public static final String PAYMENTED_STATUS = "Đã thanh toán";
 	public static final String UNPAYMENT_STATUS = "Chưa thanh toán";
 	public static final String WARTING_CONFIRM_ORDER_STATUS = "Cảnh báo xác nhận tình trạng đơn hàng";
@@ -27,8 +27,8 @@ public class Constant {
 	public static final String REMOVE_FROM_CART_ACTION="removeFromCart"; 
 	public static final String GET_BOOK_FAIL="Lỗi lấy danh sách sách"; 
 	public static final String INCORRECT_ACCOUNT_VALIDATE_MSG="Sai thông tin tài khoản"; 
-	public static final int ADMIN_ROLE=1; 
-	public static final int CUSTOMER_ROLE=2; 
+	public static final byte ADMIN_ROLE= 1; 
+	public static final byte CUSTOMER_ROLE= 0; 
 	public static final String USERNAME_EMPTY_VALIDATE_MSG="Nhap username"; 
 	public static final String PASSWORD_EMPTY_VALIDATE_MSG="Nhap password"; 
 	public static final String LOGINED_USER="loginedUser";
@@ -42,7 +42,9 @@ public class Constant {
 	public static final String DELEVERY_ADDRESS_EMPTY_VALIDATE_MSG="Địa chỉ giao hàng không thể bỏ trống";
 	public static final String TRANSFER_IMAGE_EMPTY_MSG="Ảnh giao dịch không thể bỏ trống";
 	public static final String ORDER_LIST_OF_CUSTOMER="orderListOfCustomer";
-	public static final String ORDER_ID_INVALID_VALIDATE_MGS = "id đơn hàng không hợp lệ";
-	public static final String VALUE_INVALID_VALIDATE_MGS = "Giá trị đơn hàng không hợp lệ";
+	public static final String ORDER_ID_INVALID_VALIDATE_MSG = "id đơn hàng không hợp lệ";
+	public static final String VALUE_INVALID_VALIDATE_MSG = "Giá trị đơn hàng không hợp lệ";
+	public static final String UPDATE_ORDER_SUCCESS="Cập nhật đơn hàng thành công";
+	public static final String UPDATE_ORDER_FAIL="Cập nhật đơn hàng thất bại";
 	
 }

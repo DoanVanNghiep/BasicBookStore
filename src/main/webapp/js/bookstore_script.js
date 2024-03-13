@@ -121,6 +121,12 @@ function loadImage(event) {
 		URL.revokeObjectURL(output.src)
 	}
 }
+function onClickAdminOrderConfirm(orderId, confirmType, action){
+	document.getElementById("orderIdOfAction").value = orderId;
+	document.getElementById("confirmTypeOfAction").value = confirmType;
+	document.getElementById("adminOrderForm").action = action.substring(0);
+	document.getElementById("orderIdOfAction").submit();
+}
 function onClickDeleteBook(bookTitle, bookId) {
 	let c = confirm('Bạn chắc chắn muốn xóa cuốn sách ' + bookTitle + '?');
 	if (c) {

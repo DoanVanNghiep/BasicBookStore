@@ -22,12 +22,12 @@
 		<div style="margin-bottom: 10px;">
 			<form method="post" action="adminHome">
 				<b>Lọc theo ngày bán: </b> Từ ngày &nbsp; <input type="date"
-					value="${fromDate }" required="required" name="fromDate" />&nbsp;&nbsp;
+					value="${fromDate}" required="required" name="fromDate" />&nbsp;&nbsp;
 				tới &nbsp; <input type="date" value="${toDate }" required="required"
 					name="toDate" />&nbsp; <input type="submit" value="Lọc" />&nbsp;&nbsp;&nbsp;
 				<b>Doanh thu: </b>
 				<fmt:formatNumber type="number" maxFractionDigits="0"
-					value="${turnover }" />
+					value="${turnover}" />
 				<sup>đ</sup>
 			</form>
 		</div>

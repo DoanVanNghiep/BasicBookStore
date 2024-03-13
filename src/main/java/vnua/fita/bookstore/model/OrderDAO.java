@@ -1,7 +1,6 @@
 package vnua.fita.bookstore.model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,13 +11,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.tomcat.util.bcel.classfile.Constant;
+import java.util.Date;
 
 import vnua.fita.bookstore.bean.Book;
 import vnua.fita.bookstore.bean.CartItem;
 import vnua.fita.bookstore.bean.Order;
 import vnua.fita.bookstore.bean.User;
+import vnua.fita.bookstore.util.Constant;
 import vnua.fita.bookstore.util.MyUtil;
 
 public class OrderDAO {
@@ -230,6 +229,7 @@ public class OrderDAO {
 			
 			Collection<Order> values = orderListHashMap.values();
 			ArrayList<Order> orderList = new ArrayList<Order>(values);
+			Collections.sort(orderList);
 			//Sap xep theo orderId giam dan, da dinh nghia trong phuong thuc compareTo cua lop Order
 			return orderList;
 		}
@@ -259,7 +259,9 @@ public class OrderDAO {
 			orderBook.setPrice(resultSet.getInt("ordb.price"));
 			orderBook.setImagePath(resultSet.getString("b.image_path"));
 		}
-		public List<Order> getOrderList(byte orderStatus){
+		//lay danh sach hoa don theo username cua khach hang
+		public List<Order> getOrderList(Byte orderStatus){
+			//key: orderId, value: order
 			Map<Integer, Order> orderListHashMap = new HashMap<Integer, Order>();
 			String sql = "SELECT ord.*, ordb.quantity, ordb.price, b.*, u.* "
 					+ "FROM tblorder ord "
@@ -267,7 +269,7 @@ public class OrderDAO {
 					+ "INNER JOIN tblbook b ON ordb.book_id = b.book_id "
 					+ "INNER JOIN tbluser u ON ord.customer_username = u.user_name "
 					+ "WHERE ord.order_status = ? "
-					+ "ORDER BY ord.status_date DESC, ord.order_date DESC";
+					+ "ORDER BY ord.order_date DESC, ord.status_date DESC";
 			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername, jdbcPassword);
 			try {
 				preStatement = jdbcConnection.prepareStatement(sql);
@@ -276,9 +278,9 @@ public class OrderDAO {
 				while(resultSet.next()) {
 					int orderId = resultSet.getInt("order_id");
 					if(!orderListHashMap.containsKey(orderId)) {
+						//neu chua co trong hashmap
 						Order order = new Order();
 						fillOrderFromResultSet(resultSet, order);
-						
 						List<CartItem> orderBookList = new ArrayList<CartItem>();
 						Book orderBook = new Book();
 						fillBookFromResultSet(resultSet, orderBook);
@@ -287,62 +289,37 @@ public class OrderDAO {
 						order.setOrderBookList(orderBookList);
 						orderListHashMap.put(orderId, order);
 					}else {
-						Order order = orderListHashMap.get(orderId);
-						List<CartItem> orderBookList = order.getOrderBookList();
+						//neu orderId da co trong hashmap > update order tai vi tri da ton tai do
+						Order order = orderListHashMap.get(orderId); //lay ra doi tuong order
+						List<CartItem> orderBookList = order.getOrderBookList(); //lay ra bookList
 						Book orderBook = new Book();
 						fillBookFromResultSet(resultSet, orderBook);
 						CartItem cartItem = new CartItem(orderBook, resultSet.getInt("ordb.quantity"));
-						orderBookList.add(cartItem);
+						orderBookList.add(cartItem); //bo sung them vao danh sach order tuong ung
 					}
 				}
-			} catch (SQLException e) {
-				// TODO: handle exception
+			}catch (SQLException e) {
 				e.printStackTrace();
 			}finally {
 				DBConnection.closeResultSet(resultSet);
 				DBConnection.closePreparedStatement(preStatement);
 				DBConnection.closeConnect(jdbcConnection);
 			}
+			
 			Collection<Order> values = orderListHashMap.values();
 			ArrayList<Order> orderList = new ArrayList<Order>(values);
 			Collections.sort(orderList);
+			//Sap xep theo orderId giam dan, da dinh nghia trong phuong thuc compareTo cua lop Order
 			return orderList;
 		}
-		// dùng cho trường hợp: hoàn tất giao hàng, hủy đơn, trả hàng
-		public boolean updateOrder(int orderId, byte orderStatus) {
-			boolean updateResult = false;
-			
-			String sql = "UPDATE tblorder SET order_status = ?, status_date = ?, payment_status = ?" +
-						"+ WHERE order_id = ?";
-			
-			Date stautusDate = new Date(orderStatus);
-			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername, jdbcPassword);
-			try {
-				preStatement = jdbcConnection.prepareStatement(sql);
-				preStatement.setByte(1, orderStatus);
-				preStatement.setString(2, MyUtil.convertDateToString(stautusDate));
-				preStatement.setBoolean(3, (vnua.fita.bookstore.util.Constant.DELIVERED_ORDER_STATUS == orderStatus) ? true : false);
-				preStatement.setInt(4, orderId);
-				updateResult = preStatement.executeUpdate() > 0;
-			} catch (SQLException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}finally {
-				DBConnection.closePreparedStatement(preStatement);
-				DBConnection.closeConnect(jdbcConnection);
-			}
-			return updateResult;
-						
-		}
-		
-		// Dùng cho trường hợp xác nhận thanh toán, chuyển trạng thái đang chuyển hàng
+
 		public boolean updateOrderNo(int orderId, byte orderStatus) {
 			boolean updateResult = false;
-			
-			String sql = "UPDATE tblorder SET order_no = ?, order_approve_date = ?, order_status = ?, status_date = ?,payment_status = ?" +
-						"WHERE order_id = ?";
+			// TODO Auto-generated method stub
+			String sql = "UPDATE tblorder t SET t.order_no = ?,t.order_approve_date = ?, t.order_status = ?, t.status_date = ?, t.payment_status = ?\r\n"
+					+ "WHERE t.order_id = ?";
 			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername, jdbcPassword);
-			Date now = new Date(orderStatus);//ngày hiện tại
+			Date now = new Date();
 			String orderNo = MyUtil.createOrderNo(orderId);
 			try {
 				preStatement = jdbcConnection.prepareStatement(sql);
@@ -350,14 +327,40 @@ public class OrderDAO {
 				preStatement.setString(2, MyUtil.convertDateToString(now));
 				preStatement.setByte(3, orderStatus);
 				preStatement.setString(4, MyUtil.convertDateToString(now));
-				preStatement.setBoolean(5, true);// đã thanh toán
+				preStatement.setBoolean(5, true);
 				preStatement.setInt(6, orderId);
 				updateResult = preStatement.executeUpdate() > 0;
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
-			}finally {
-				DBConnection.closePreparedStatement(preStatement);
+			} finally {
+				DBConnection.closeStatement(statement);
+				DBConnection.closeConnect(jdbcConnection);
+			}
+			return updateResult;
+		}
+
+		public boolean updateOrder(int orderId, byte orderStatus) {
+			boolean updateResult = false;
+			// TODO Auto-generated method stub
+			String sql = "UPDATE tblorder SET order_status = ?, status_date = ?, payment_status = ?\r\n"
+					+ "WHERE order_id = ?";
+			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername, jdbcPassword);
+			Date now = new Date();
+			String orderNo = MyUtil.createOrderNo(orderId);
+			try {
+				preStatement = jdbcConnection.prepareStatement(sql);
+				preStatement.setByte(1, orderStatus);
+				preStatement.setString(2, MyUtil.convertDateToString(now));
+				preStatement.setBoolean(3, Constant.DELIVERED_ORDER_STATUS == orderStatus);
+				preStatement.setInt(4, orderId);
+				
+				updateResult = preStatement.executeUpdate() > 0;
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			} finally {
+				DBConnection.closeStatement(statement);
 				DBConnection.closeConnect(jdbcConnection);
 			}
 			return updateResult;

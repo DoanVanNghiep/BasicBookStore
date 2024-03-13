@@ -28,6 +28,17 @@ public class MyUtil {
 		// trên JSP có thể truy cập thông qua ${loginedUser}
 		session.setAttribute("cartOfCustomer", cart);
 	}
+	public static String getServletPath(String servletPathFull) {
+		if (servletPathFull == null || servletPathFull.isEmpty()) {
+			return ""; // Hoặc có thể ném một ngoại lệ
+		}
+
+		String[] result = servletPathFull.split("/");
+		if (result.length == 0) {
+			return "";
+		}
+		return "/"+result[1];
+	}
 
 	// lấy thông tin giỏ hàng lưu trữ trong Session
 	public static Cart getCartOfCustomer(HttpSession session) {

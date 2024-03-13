@@ -3,7 +3,7 @@ package vnua.fita.bookstore.bean;
 public class User {
 	private String username;
 	private String password;
-	private int role;
+	private byte role;
 	private String fullname;
 	private String email;
 	private String mobile;
@@ -14,7 +14,7 @@ public class User {
 	}
 
 
-	public User(String username, String password, int role, String fullname) {
+	public User(String username, String password, byte role, String fullname) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -23,7 +23,7 @@ public class User {
 	}
 	
 
-	public User(String username, String password, int role, String fullname, String email,
+	public User(String username, String password, byte role, String fullname, String email,
 			String mobile, String address) {
 		super();
 		this.username = username;
@@ -52,11 +52,11 @@ public class User {
 		this.password = password;
 	}
 
-	public int getRole() {
+	public byte getRole() {
 		return role;
 	}
 
-	public void setRole(int role) {
+	public void setRole(byte role) {
 		this.role = role;
 	}
 

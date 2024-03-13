@@ -36,7 +36,7 @@ public class UserDAO {
 			resultSet = preStatement.executeQuery();
 			if (resultSet.next()) {
 				return new User(resultSet.getString("user_name"),
-						resultSet.getString("password"), resultSet.getInt("role"),
+						resultSet.getString("password"), resultSet.getByte("role"),
 						resultSet.getString("fullname"), resultSet.getString("email"),
 						resultSet.getString("mobile"), resultSet.getString("address"));
 			}
@@ -56,7 +56,7 @@ public class UserDAO {
 			resultSet = preStatement.executeQuery();
 			if (resultSet.next()) {
 				return new User(resultSet.getString("user_name"),
-						resultSet.getString("password"), resultSet.getInt("role"),
+						resultSet.getString("password"), resultSet.getByte("role"),
 						resultSet.getString("fullname"), resultSet.getString("email"),
 						resultSet.getString("mobile"), resultSet.getString("address"));
 			}

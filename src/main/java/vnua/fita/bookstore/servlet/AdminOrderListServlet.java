@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.bcel.classfile.Constant;
 
 import vnua.fita.bookstore.bean.Order;
 import vnua.fita.bookstore.model.BookDAO;
 import vnua.fita.bookstore.model.OrderDAO;
+import vnua.fita.bookstore.util.Constant;
 import vnua.fita.bookstore.util.MyUtil;
 
 /**
@@ -36,75 +36,69 @@ public class AdminOrderListServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String servletPath = request.getServletPath();
-		String pathInfo = MyUtil.getPathInfoFromServletPath(servletPath);
-		List<Order> orderListOfCustomer = new ArrayList<Order>();
-		if(vnua.fita.bookstore.util.Constant.WAITING_APPROVE_ACTION.equals(pathInfo)) {
-			orderListOfCustomer = orderDAO.getOrderList(vnua.fita.bookstore.util.Constant.WAITING_CONFIRM_ORDER_STATUS);
-			request.setAttribute("listType", "CHỜ XÁC NHẬN");
-		}else if(vnua.fita.bookstore.util.Constant.DELIVERING_ACTION.equals(pathInfo)) {
-			orderListOfCustomer = orderDAO.getOrderList(vnua.fita.bookstore.util.Constant.DELIVERING_ORDER_STATUS);
-			request.setAttribute("listType", "ĐANG CHỜ GIAO");
-		}else if(vnua.fita.bookstore.util.Constant.DELIVERED_ACTION.equals(pathInfo)) {
-			orderListOfCustomer = orderDAO.getOrderList(vnua.fita.bookstore.util.Constant.DELIVERED_ORDER_STATUS);
-			request.setAttribute("listType", "ĐÃ GIAO");
-		}else if(vnua.fita.bookstore.util.Constant.REJECT_ACTION.equals(pathInfo)) {
-			orderListOfCustomer = orderDAO.getOrderList(vnua.fita.bookstore.util.Constant.REJECT_ORDER_STATUS);
-			request.setAttribute("listType", "KHÁCH TRẢ LẠI");
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String servletPath= req.getServletPath();
+		String pathInfo=MyUtil.getPathInfoFromServletPath(servletPath);
+		List<Order> orders=new ArrayList<Order>();
+		if(Constant.WAITING_APPROVE_ACTION.equals(pathInfo)) {
+			orders=orderDAO.getOrderList(Constant.WAITING_CONFIRM_ORDER_STATUS);
+			req.setAttribute("listType", "CHỜ XÁC NHẬN");
+		}else if(Constant.DELEVERING_ACTION.equals(pathInfo)) {
+			orders=orderDAO.getOrderList(Constant.DELIVERING_ORDER_STATUS);
+			req.setAttribute("listType", "ĐANG CHỜ GIAO");
+		}else if(Constant.DELEVERED_ACTION.equals(pathInfo)) {
+			orders=orderDAO.getOrderList(Constant.DELIVERED_ORDER_STATUS);
+			req.setAttribute("listType", "ĐÃ GIAO");
+		}else if(Constant.REJECT_ACTION.equals(pathInfo)) {
+			orders=orderDAO.getOrderList(Constant.REJECT_ORDER_STATUS);
+			req.setAttribute("listType", "KHÁCH TRẢ LẠI");
 		}
 		
-		request.setAttribute("orderListOfCustomer", orderListOfCustomer);
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/Views/adminOrderListView.jsp");
-		dispatcher.forward(request, response);
+		req.setAttribute(Constant.ORDER_LIST_OF_CUSTOMER, orders);
+		RequestDispatcher dispatcher=this.getServletContext().getRequestDispatcher("/Views/adminOrderListView.jsp");
+		dispatcher.forward(req, resp);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		List<String> errors = new ArrayList<String>();
-		String orderIdStr = request.getParameter("orderId");
-		String confirmTypeStr = request.getParameter("confirmType");
-		int orderId = -1;
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<String> errors=new ArrayList<String>();
+		String orderIdStr=req.getParameter("orderId");
+		String confirmTypeStr=req.getParameter("confirmType");
+		int orderId=-1;
 		try {
-			orderId = Integer.parseInt(orderIdStr);
+			orderId=Integer.parseInt(orderIdStr);
 		} catch (Exception e) {
 			// TODO: handle exception
-			errors.add(vnua.fita.bookstore.util.Constant.ORDER_ID_INVALID_VALIDATE_MGS);
+			errors.add(Constant.ORDER_ID_INVALID_VALIDATE_MSG);
 		}
-		byte confirmType = -1;
+		byte confirmType=-1;
 		try {
-			confirmType = Byte.parseByte(confirmTypeStr);
+			confirmType=Byte.parseByte(confirmTypeStr);
 		} catch (Exception e) {
 			// TODO: handle exception
-			errors.add(vnua.fita.bookstore.util.Constant.VALUE_INVALID_VALIDATE_MGS);
+			errors.add(Constant.VALUE_INVALID_VALIDATE_MSG);
 		}
-		if (errors.isEmpty()) {
-			boolean updateResult = false;
-			if (vnua.fita.bookstore.util.Constant.DELIVERING_ORDER_STATUS == confirmType) {
-				// xác nhận đơn và chuyển trạng thái đang giao hàng
-				updateResult = orderDAO.updateOrderNo(orderId, confirmType);
-			}else if (vnua.fita.bookstore.util.Constant.DELIVERED_ORDER_STATUS == confirmType) {
-				// xác nhận đơn và chuyển trạng thái đang giao hàng
-				updateResult = orderDAO.updateOrder(orderId, confirmType);
-			}else if (vnua.fita.bookstore.util.Constant.REJECT_ORDER_STATUS == confirmType) {
-				// xác nhận đơn và chuyển trạng thái đang giao hàng
-				updateResult = orderDAO.updateOrder(orderId, confirmType);
+		if(errors.isEmpty()) {
+			boolean updateResult=false;
+			if(Constant.DELIVERING_ORDER_STATUS ==confirmType) {
+				updateResult=orderDAO.updateOrderNo(orderId,confirmType);
+			}else if(Constant.DELIVERED_ORDER_STATUS==confirmType) {
+				updateResult=orderDAO.updateOrder(orderId,confirmType);
+			}else if(Constant.REJECT_ORDER_STATUS==confirmType) {
+				updateResult=orderDAO.updateOrder(orderId,confirmType);
 			}
-			if (updateResult) {
-				request.setAttribute("message", "cập nhật đơn hàng thành công");
+			if(updateResult) {
+				req.setAttribute("message", Constant.UPDATE_ORDER_SUCCESS);
 			}else {
-				errors.add("cập nhật đơn hàng không thành công");
+				errors.add(Constant.UPDATE_ORDER_FAIL);
 			}
-			
-			if (!errors.isEmpty()) {
-				request.setAttribute("errors", String.join(", ", errors));
+			if(!errors.isEmpty()) {
+				req.setAttribute("errors", String.join(", ", errors));
 			}
+			doGet(req, resp);
 		}
-		doGet(request, response);
 	}
-
 }

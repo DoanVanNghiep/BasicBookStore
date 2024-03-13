@@ -32,7 +32,6 @@
 					<th>Địa chỉ nhận sách</th>
 					<th>Phương thức thanh toán</th>
 					<th>Trạng thái đơn hàng</th>
-					<th>Thao tác</th>
 				</tr>
 				<c:forEach items="${orderListOfCustomer}" var="orderOfCustomer">
 					<tr>
@@ -97,30 +96,30 @@
 											type="number" maxFractionDigits="0"
 											value="${orderOfCustomer.totalCost}"></fmt:formatNumber>
 								</span> <sup>đ</sup>
-								</b>
-								<c:if
-									test="${Constant.WAITING_CONFIRM_ORDER_STATUS == orderOfCustomer.orderStatus}">
-									&nbsp;&nbsp;&nbsp;&nbsp;
-									<button
-										onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.DELIVERING_ORDER_STATUS},'${Constant.WAITING_APPROVE_ACTION}');">Xác
-										nhận đơn</button>
-								</c:if>
-								<c:if
-									test="${Constant.DELIVERING_ORDER_STATUS == orderOfCustomer.orderStatus}">
-									<br>
-									<br>
-									<button
-										onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.DELIVERING_ORDER_STATUS},'${Constant.DELIVERING_ACTION}');">Xác
-										nhận đã giao hàng</button>&nbsp;&nbsp;
-									<button
-										onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.REJECT_ORDER_STATUS},'${Constant.DELIVERING_ACTION}');">Xác
-										nhận khách trả hàng</button>
-								</c:if>
+							<c:if
+								test="${Constant.WAITING_CONFIRM_ORDER_STATUS == orderOfCustomer.orderStatus}">
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<button onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.DELIVERING_ORDER_STATUS},'${Constant.WAITING_APPROVE_ACTION}');">Xác nhận đơn</button>
+							</c:if>
+							<c:if
+								test="${Constant.DELIVERING_ORDER_STATUS == orderOfCustomer.orderStatus}">
+								<button onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.DELIVERED_ORDER_STATUS},'${Constant.DELEVERING_ACTION}');">Đã giao hàng</button>
+								&nbsp;&nbsp;
+								<button onclick="onClickAdminOrderConfirm(${orderOfCustomer.orderId},${Constant.REJECT_ORDER_STATUS},'${Constant.DELEVERING_ACTION}');">Khách trả hàng</button>
+							</c:if>
 							</div> <!-- ------------------------------------------------------------- -->
 						</td>
 					</tr>
 				</c:forEach>
 			</table>
 	</div>
+	<script type="text/javascript">
+	function onClickAdminOrderConfirm(orderId,confirmType,action){
+		document.getElementById("orderIdOfAction").value=orderId;
+		document.getElementById("confirmTypeOfAction").value=confirmType;
+		document.getElementById("adminOrderForm").action=action.substring(0);
+		document.getElementById("adminOrderForm").submit();
+	}
+	</script>
 </body>
 </html>
