@@ -41,7 +41,6 @@ public class OrderServlet extends HttpServlet {
 		String jdbcURL = getServletContext().getInitParameter("jdbcURL");
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
-//		bookDAO = new BookDAO("jdbc:mysql://localhost:3306/bookstore", "root", "123456");
 		orderDAO = new OrderDAO(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 

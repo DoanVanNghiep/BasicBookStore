@@ -31,7 +31,6 @@ public class DetailBookServlet extends HttpServlet {
 		String jdbcURL = getServletContext().getInitParameter("jdbcURL");
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
-//		bookDAO = new BookDAO("jdbc:mysql://localhost:3306/bookstore", "root", "123456");
 		bookDAO = new BookDAO(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 

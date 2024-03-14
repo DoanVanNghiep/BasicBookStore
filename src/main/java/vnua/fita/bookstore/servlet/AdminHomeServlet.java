@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,6 @@ public class AdminHomeServlet extends HttpServlet {
 		String jdbcURL = getServletContext().getInitParameter("jdbcURL");
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
-//		bookDAO = new BookDAO("jdbc:mysql://localhost:3306/bookstore", "root", "123456");
 		bookDAO = new BookDAO(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 
@@ -31,9 +29,20 @@ public class AdminHomeServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String errors = null;
 		List<Book> list = bookDAO.listAllBooks();
-		if (list.isEmpty()) {
-			errors = "Không thể lấy dữ liệu";
+		String keyword = request.getParameter("keyword");
+		Date today = new Date();
+		Date todaySubtract12Month = MyUtil.subtractFromDate(12, today);
+		String todaySubtract12MonthStr = MyUtil.convertDateToString(todaySubtract12Month);
+		String todayStr = MyUtil.convertDateToString(today);
+		if(keyword != null && !keyword.isEmpty()) {
+			list = bookDAO.listAllBooks(keyword, todaySubtract12MonthStr, todayStr);
+		}else {
+			list = bookDAO.listAllBooks(todaySubtract12MonthStr, todayStr);
 		}
+		if (list.isEmpty()) {
+			errors = "Không có cuốn sách nào";
+		}
+
 		request.setAttribute("errors", errors);
 		request.setAttribute("turnover", calSumOfMoney(list));
 		request.setAttribute("bookList", list);
@@ -55,7 +64,7 @@ public class AdminHomeServlet extends HttpServlet {
 			String toDate = MyUtil.attachTailToDate(toDateParam);
 			list = bookDAO.listAllBooks(fromDate, toDate);
 			if(list.isEmpty()) {
-				errors = "Không thể lấy sách";
+				errors = "Không có cuốn sách nào";
 			}
 			
 			request.setAttribute("errors", errors);

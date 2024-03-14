@@ -23,11 +23,11 @@
 			<form method="post" action="adminHome">
 				<b>Lọc theo ngày bán: </b> Từ ngày &nbsp; <input type="date"
 					value="${fromDate}" required="required" name="fromDate" />&nbsp;&nbsp;
-				tới &nbsp; <input type="date" value="${toDate }" required="required"
+				tới &nbsp; <input type="date" value="${toDate}" required="required"
 					name="toDate" />&nbsp; <input type="submit" value="Lọc" />&nbsp;&nbsp;&nbsp;
 				<b>Doanh thu: </b>
 				<fmt:formatNumber type="number" maxFractionDigits="0"
-					value="${turnover}" />
+					value="${turnover }" />
 				<sup>đ</sup>
 			</form>
 		</div>
@@ -50,15 +50,15 @@
 					<td align="center"><fmt:formatNumber type="number"
 							maxFractionDigits="0" value="${book.quantityInStock }" /></td>
 					<td align="center"><fmt:formatNumber type="number"
-							maxFractionDigits="0" value="${book.soldQuantity}" /></td>
-					<td><fmt:formatDate value="${book.createDate}"
+							maxFractionDigits="0" value="${book.soldQuantity }" /></td>
+					<td><fmt:formatDate value="${book.createDate }"
 							pattern="dd-MM-yyyy HH:mm" /></td>
 					<td align="center"><button type="button"
 							onclick="activeAsLink('editBook?bookId=${book.bookId}')">Sửa</button></td>
 					<td align="center"><button type="button"
 							onclick="onClickDeleteBook('${book.title}', ${book.bookId})">Xóa</button></td>
 					<td align="center"><button type="button"
-							onclick="activeAsLinkInNewTab('detailBook?bookId=${book.bookId}')">Xem
+							onclick="activeAsLink('detailBook_backend?bookId=${book.bookId}')">Xem
 							chi tiết</button></td>
 				</tr>
 			</c:forEach>
