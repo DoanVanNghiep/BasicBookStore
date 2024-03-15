@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import vnua.fita.bookstore.util.MyUtil;
+
 /**
  * Servlet implementation class LogoutServlet
  */
@@ -31,12 +33,8 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		HttpSession session = request.getSession(false);
-//		session.removeAttribute("loginedUser");
-//		RequestDispatcher rd = this.getServletContext()
-//				.getRequestDispatcher("/Views/clientHomeView.jsp");
-//		rd.forward(request, response);
 		request.getSession().invalidate();
+		MyUtil.deleteUserCookie(response);
 		response.sendRedirect(request.getContextPath() + "/");
 	}
 
@@ -46,7 +44,6 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

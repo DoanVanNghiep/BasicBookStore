@@ -17,7 +17,6 @@ import vnua.fita.bookstore.model.DBConnection;
 import vnua.fita.bookstore.model.UserDAO;
 import vnua.fita.bookstore.util.MyUtil;
 
-//@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAO userDAO;
@@ -46,8 +45,9 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String rememberMe = request.getParameter("rememberMe");
 
-		LoginForm loginForm = new LoginForm(username, password);
+		LoginForm loginForm = new LoginForm(username, password, rememberMe);
 
 		// Kiểm tra tính hợp lệ của dữ liệu nhập vào
 		List<String> errors = loginForm.validate();
@@ -63,15 +63,16 @@ public class LoginServlet extends HttpServlet {
 			} else { // Đăng nhập thành công
 				HttpSession session = request.getSession();
 				MyUtil.storeLoginedUser(session, user);
+				boolean remember = "Y".equals(rememberMe);
+				if(remember) {
+					MyUtil.storeUserCookie(response, user);
+				}else {
+					MyUtil.deleteUserCookie(response);
+				}
+				
 				if (user.getRole() == 0) {
-//					RequestDispatcher rd = this.getServletContext()
-//							.getRequestDispatcher("/Views/clientHomeView.jsp");
-//					rd.forward(request, response);
 					response.sendRedirect(request.getContextPath()+"/clientHome");
 				} else if (user.getRole() == 1) {
-//					RequestDispatcher rd = this.getServletContext()
-//							.getRequestDispatcher("/Views/adminHomeView.jsp");
-//					rd.forward(request, response);
 					response.sendRedirect(request.getContextPath()+"/adminHome");
 				}
 			}

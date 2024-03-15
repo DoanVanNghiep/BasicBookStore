@@ -15,7 +15,6 @@
 			|
 			<a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
 		</c:if>
-
 		<c:if test="${empty loginedUser }">
 			<a href="${pageContext.request.contextPath}/login">Đăng nhập</a>
 		</c:if>

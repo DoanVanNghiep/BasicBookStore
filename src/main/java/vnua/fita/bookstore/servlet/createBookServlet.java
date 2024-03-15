@@ -28,14 +28,14 @@ import vnua.fita.bookstore.util.MyUtil;
 		maxFileSize = 1024 * 1024 * 10, // 10MB
 		maxRequestSize = 1024 * 1024 * 20 // 20MB
 )
-public class createBookServlet extends HttpServlet {
+public class CreateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BookDAO bookDAO;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public createBookServlet() {
+	public CreateBookServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

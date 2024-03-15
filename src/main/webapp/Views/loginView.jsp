@@ -7,14 +7,30 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div align="center">
+	<h3>Trang đăng nhập</h3>
 	<p style="color: red;">${errors}</p>
 	<form action="login" method="post">
-		<label for="username">Tài khoản</label><br> <input type="text"
-			name="username" id="username" value="${loginForm.username }" ><br>
-		<br> <label for="password">Mật khẩu</label><br> <input
-			type="password" name="password" id="password" value="${loginForm.password }"><br>
-		<br> <input type="submit" value="Đăng nhập"> <a
-			href="${pageContext.request.contextPath}/">Bỏ qua</a>
+		<table border="1">
+			<tr>
+				<td>Tài khoản</td>
+				<td><input type="text" name="username" id="username" value="${loginForm.username }" required="required"></td>
+			</tr>
+			<tr>
+				<td>Mật khẩu</td>
+				<td><input type="password" name="password" id="password" value="${loginForm.password }"></td>
+			</tr>
+			<tr>
+				<td>Ghi nhớ</td>
+				<td><input type="checkbox" name="rememberMe" value="Y" ${loginForm.rememberMe} /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Đăng nhập"> &nbsp;&nbsp;
+				<a href="${pageContext.request.contextPath}/">Bỏ qua</a></td>
+			</tr>
+		</table>
 	</form>
+</div>
 </body>
 </html>
