@@ -57,9 +57,8 @@
 							onclick="activeAsLink('editBook?bookId=${book.bookId}')">Sửa</button></td>
 					<td align="center"><button type="button"
 							onclick="onClickDeleteBook('${book.title}', ${book.bookId})">Xóa</button></td>
-					<td align="center"><button type="button"
-							onclick="activeAsLink('detailBook_backend?bookId=${book.bookId}')">Xem
-							chi tiết</button></td>
+					<td align="center"><a href="detailBook_Admin?bookId=${book.bookId }">Xem chi
+							tiết</a></td>
 				</tr>
 			</c:forEach>
 		</table>

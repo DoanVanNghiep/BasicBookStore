@@ -43,27 +43,9 @@
 						</td>
 					<tr>
 				</table>
-				<div style="margin-top: 20px">
+				<div style="margin-top: 20px;align: center;">
 					<b>Số lượng có sẵn: <span>${book.quantityInStock}</span></b>
-					&nbsp;&nbsp; <img alt="minus-icon" src="img/icons-minus.png"
-						onclick="minusValue('quantity');" width="20"> <input
-						type="text" value="1" size="2" style="line-height: 20px;"
-						id="quantity" name="quantityPurchased"
-						onkeyup="validateValue(this, ${book.quantityInStock});"> <img
-						alt="add-icon" src="img/icons-add.png"
-						onclick="plusValue('quantity',${book.quantityInStock})" width="20"
-						height="20"> &nbsp;&nbsp;&nbsp;
-					<c:if test="${not empty loginedUser }">
-						<button
-							onclick="checkQuantityAndSubmit('quantity',${book.bookId},${bookquantityInStock })">Thêm
-							vào giỏ hàng</button>
-					</c:if>
-					<c:if test="${empty loginedUser }">
-						<button type="button" onclick="alert('Bạn cần đăng nhập!')">Thêm
-							vào giỏ hàng</button>
-					</c:if>
-					&nbsp;&nbsp;&nbsp; <a href="clientHome">Tiếp tục xem sách</a>
-				</div>
+				</div>	
 			</form>
 		</c:if>
 	</div>

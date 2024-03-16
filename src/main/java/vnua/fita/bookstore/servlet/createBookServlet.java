@@ -23,7 +23,6 @@ import vnua.fita.bookstore.util.MyUtil;
  * Servlet implementation class createBookServlet
  */
 
-@WebServlet("/createBook")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 		maxFileSize = 1024 * 1024 * 10, // 10MB
 		maxRequestSize = 1024 * 1024 * 20 // 20MB
@@ -74,17 +73,6 @@ public class CreateBookServlet extends HttpServlet {
 		if (errors.isEmpty()) {
 			int price = Integer.parseInt(priceStr);
 			int quantityInStock = Integer.parseInt(quantityInStockStr);
-
-//			// lưu ảnh thanh toán vào thư mục nếu có
-//			String fileName = title + "_" + MyUtil.getTimeLabel()
-//					+ MyUtil.extracFileExtension(filePart);
-//			String appPath = getServletContext().getRealPath(""); // thu muc goc cua ung
-//																	// dung web
-//			filePart.write(MyUtil.getFolderUpload(appPath, "book-img").getAbsolutePath()
-//					+ File.separator + fileName);
-//			imagePath = "" + File.separator+fileName;
-
-			// lưu ảnh vào thư mục 'img' nếu có
 			String fileName = title + "_" + MyUtil.getTimeLabel()
 					+ MyUtil.extracFileExtension(filePart);
 			String contextPath = getServletContext().getRealPath("/"); // Lấy đường dẫn
