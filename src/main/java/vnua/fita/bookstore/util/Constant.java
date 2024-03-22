@@ -46,5 +46,8 @@ public class Constant {
 	public static final String VALUE_INVALID_VALIDATE_MSG = "Giá trị đơn hàng không hợp lệ";
 	public static final String UPDATE_ORDER_SUCCESS="Cập nhật đơn hàng thành công";
 	public static final String UPDATE_ORDER_FAIL="Cập nhật đơn hàng thất bại";
-	
+	public static final String WAIT_FOR_CONFIRMATION = "CHỜ XÁC NHẬN";
+	public static final String WAITING_FOR_DELIVERY = "ĐANG CHỜ GIAO";
+ 	public static final String DELIVERED = "ĐÃ GIAO";
+	public static final String CUSTOMER_RETURN = "KHÁCH TRẢ LẠI";
 }

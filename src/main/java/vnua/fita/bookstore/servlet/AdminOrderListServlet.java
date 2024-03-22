@@ -42,16 +42,16 @@ public class AdminOrderListServlet extends HttpServlet {
 		List<Order> orders=new ArrayList<Order>();
 		if(Constant.WAITING_APPROVE_ACTION.equals(pathInfo)) {
 			orders=orderDAO.getOrderList(Constant.WAITING_CONFIRM_ORDER_STATUS);
-			req.setAttribute("listType", "CHỜ XÁC NHẬN");
+			req.setAttribute("listType", Constant.WAIT_FOR_CONFIRMATION);
 		}else if(Constant.DELEVERING_ACTION.equals(pathInfo)) {
 			orders=orderDAO.getOrderList(Constant.DELIVERING_ORDER_STATUS);
-			req.setAttribute("listType", "ĐANG CHỜ GIAO");
+			req.setAttribute("listType", Constant.WAITING_FOR_DELIVERY);
 		}else if(Constant.DELEVERED_ACTION.equals(pathInfo)) {
 			orders=orderDAO.getOrderList(Constant.DELIVERED_ORDER_STATUS);
-			req.setAttribute("listType", "ĐÃ GIAO");
+			req.setAttribute("listType", Constant.DELIVERED);
 		}else if(Constant.REJECT_ACTION.equals(pathInfo)) {
 			orders=orderDAO.getOrderList(Constant.REJECT_ORDER_STATUS);
-			req.setAttribute("listType", "KHÁCH TRẢ LẠI");
+			req.setAttribute("listType", Constant.CUSTOMER_RETURN);
 		}
 		
 		req.setAttribute(Constant.ORDER_LIST_OF_CUSTOMER, orders);

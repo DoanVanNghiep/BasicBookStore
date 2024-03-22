@@ -9,8 +9,8 @@
 <title>Thông tin chi tiết sách</title>
 </head>
 <body>
-	<jsp:include page="_header.jsp"></jsp:include>
-	<jsp:include page="_menu.jsp"></jsp:include>
+	<jsp:include page="_header_backend.jsp"></jsp:include>
+	<jsp:include page="_menu_backend.jsp"></jsp:include>
 	<div align="center">
 		<h3>Thông tin chi tiết cuốn sách</h3>
 		<p style="color: red">${errors }</p>

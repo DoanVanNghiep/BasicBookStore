@@ -348,6 +348,60 @@ public class BookDAO {
 		return listBook;
 	}
 
+	public List<Book> listAllBooksAdmin(int offset, int noOfRecords, String keyword, String fromDate, String toDate) {
+		List<Book> listBook = new ArrayList<Book>();
+		String sql = "SELECT b.*, sum(obor.quantity) AS sum_quantity, sum(obor.price*obor.quantity) AS sum_price"
+				+ "FROM tblbook b"
+				+ "LEFT JOIN"
+				+ "(SELECT ob.* from tblorder_book ob INNER JOIN tblorder o ON ob.order_id = o.order_id"
+				+ "WHERE o.order_status = ? AND (o.status_date BETWEEN ? AND ?)) obor ON b.book_id = obor.book_id "
+				+ "WHERE title LIKE ? "
+				+ "ORDER BY create_date DESC "
+				+ "LIMIT ?, ?";
+		jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername,
+				jdbcPassword);
+		try {
+			int index = 0;
+			preStatement = jdbcConnection.prepareStatement(sql);
+			preStatement.setInt(1, Constant.DELIVERED_ORDER_STATUS);
+			preStatement.setString(2, fromDate);
+			preStatement.setString(3, toDate);
+			if (keyword != null && !keyword.isEmpty()) {
+				preStatement.setString(4, "%" + keyword + "%");
+			}
+			preStatement.setInt(5, offset); // vị trí bắt đầu lấy
+			preStatement.setInt(6, noOfRecords); // số bản ghi lấy ra
+
+			resultSet = preStatement.executeQuery();
+			while (resultSet.next()) {
+				int id = resultSet.getInt("book_id");
+				String title = resultSet.getString("title");
+				String author = resultSet.getString("author");
+				int price = resultSet.getInt("price");
+				int quantityInStock = resultSet.getInt("quantity_in_stock");
+				String detail = resultSet.getString("detail");
+				String imagePath = resultSet.getString("image_path");
+				Date createDate = resultSet.getTimestamp("create_date");
+				int soldQuantity = resultSet.getInt("sum_quantity");
+				int sumOfSoldBook = resultSet.getInt("sum_price");
+				Book book = new Book(id, title, author, price, quantityInStock);
+				book.setDetail(detail);
+				book.setImagePath(imagePath);
+				book.setCreateDate(createDate);
+				book.setSoldQuantity(soldQuantity);
+				book.setSumOfSoldBook(sumOfSoldBook);
+				listBook.add(book);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnection.closeResultSet(resultSet);
+			DBConnection.closePreparedStatement(preStatement);
+			DBConnection.closeConnect(jdbcConnection);
+		}
+		return listBook;
+	}
+
 	public int getNoOfRecords(String keyword) {
 		String sql = "SELECT count(book_id) FROM tblbook ";
 		int result = 0;

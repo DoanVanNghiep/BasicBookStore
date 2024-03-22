@@ -13,7 +13,58 @@
 </head>
 <body>
 	<jsp:include page="_header_backend.jsp"></jsp:include>
-	<jsp:include page="_menu_backend.jsp"></jsp:include>
+	<c:if test="${listType == Constant.WAIT_FOR_CONFIRMATION}">
+	    <div style="padding: 5px; text-align: center;">
+	        <a href="${pageContext.request.contextPath}/adminHome">Trang chủ</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/waiting" style="text-decoration:none;color:blue;">Các đơn hàng chưa xác nhận</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivering">Các đơn hàng đang chờ giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivered">Các đơn hàng đã giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/reject">Các đơn hàng khách trả lại</a>
+	    </div>
+	</c:if>
+		<c:if test="${listType == Constant.WAITING_FOR_DELIVERY}">
+	    <div style="padding: 5px; text-align: center;">
+	        <a href="${pageContext.request.contextPath}/adminHome">Trang chủ</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/waiting">Các đơn hàng chưa xác nhận</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivering" style="text-decoration:none;color:blue;">Các đơn hàng đang chờ giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivered">Các đơn hàng đã giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/reject">Các đơn hàng khách trả lại</a>
+	    </div>
+	</c:if>
+		<c:if test="${listType == Constant.DELIVERED}">
+	    <div style="padding: 5px; text-align: center;">
+	        <a href="${pageContext.request.contextPath}/adminHome">Trang chủ</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/waiting">Các đơn hàng chưa xác nhận</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivering">Các đơn hàng đang chờ giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivered" style="text-decoration:none;color:blue;">Các đơn hàng đã giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/reject">Các đơn hàng khách trả lại</a>
+	    </div>
+	</c:if>
+		<c:if test="${listType == Constant.CUSTOMER_RETURN}">
+	    <div style="padding: 5px; text-align: center;">
+	        <a href="${pageContext.request.contextPath}/adminHome">Trang chủ</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/waiting">Các đơn hàng chưa xác nhận</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivering">Các đơn hàng đang chờ giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/delivered">Các đơn hàng đã giao</a>
+	        |
+	        <a href="${pageContext.request.contextPath }/adminOrderList/reject" style="text-decoration:none;color:blue;">Các đơn hàng khách trả lại</a>
+	    </div>
+	</c:if>
 	<div align="center">
 		<h3>DANH SÁCH ĐƠN HÀNG ${listType}</h3>
 		<form id="adminOrderForm" method="post" action="">

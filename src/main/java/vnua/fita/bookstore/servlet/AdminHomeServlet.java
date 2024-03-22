@@ -28,6 +28,7 @@ public class AdminHomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String errors = null;
+		List<Book> listBook = null;
 		List<Book> list = bookDAO.listAllBooks();
 		String keyword = request.getParameter("keyword");
 		Date today = new Date();
@@ -42,10 +43,23 @@ public class AdminHomeServlet extends HttpServlet {
 		if (list.isEmpty()) {
 			errors = "Không có cuốn sách nào";
 		}
+		int page = 1;
+		int recordsPerPage = 2;
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		listBook = bookDAO.listAllBooks((page - 1) * recordsPerPage, recordsPerPage, keyword);
+		int noOfRecords = bookDAO.getNoOfRecords(keyword);
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
+		// Lưu thông tin vào request attribute trước khi forward sang views
+		request.setAttribute("bookList", listBook);
+		request.setAttribute("noOfPages", noOfPages);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("keyword", keyword);
 		request.setAttribute("errors", errors);
 		request.setAttribute("turnover", calSumOfMoney(list));
-		request.setAttribute("bookList", list);
+		//request.setAttribute("bookLists", list);
 		RequestDispatcher rd = this.getServletContext()
 				.getRequestDispatcher("/Views/adminHomeView.jsp");
 		rd.forward(request, response);

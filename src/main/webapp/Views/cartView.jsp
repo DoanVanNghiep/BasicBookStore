@@ -112,7 +112,11 @@
 							<b>Chọn ảnh kết quả chuyển khoản:</b>
 							<img alt="" src="" id="bookImage" width="150">&nbsp;
 							<input type="file" name="file" accept="image/*" onchange="loadImage(event)" />
-						</div>
+						</div><input type="radio"
+						name="paymentMode" value="transfer"
+						onclick="document.getElementById('uploadVNPAY').style.display='block';" />
+						Thanh toán VNPAY <br>
+						<div id="uploadVNPAY" style="padding-left: 30px; display: none;"><br>
 						</td>
 				</tr>
 				<tr>
