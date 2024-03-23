@@ -38,6 +38,7 @@ public class Constant {
 	public static final String INSERT_BOOK_FAIL="Lỗi thêm mới sách";
 	public static final String CASH_PAYMENT_MODE="cash";
 	public static final String TRANSFER_PAYMENT_MODE = "transfer";
+	public static final String VNPAY_PAYMENT_MODE = "VNPAY";
 	public static final String UNPAYMENTED_STATUS="Chưa trả tiền";
 	public static final String DELEVERY_ADDRESS_EMPTY_VALIDATE_MSG="Địa chỉ giao hàng không thể bỏ trống";
 	public static final String TRANSFER_IMAGE_EMPTY_MSG="Ảnh giao dịch không thể bỏ trống";

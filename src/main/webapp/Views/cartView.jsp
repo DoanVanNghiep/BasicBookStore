@@ -70,6 +70,7 @@
 		<p style="color: red;">${errors}</p>
 		<form action="${pageContext.request.contextPath }/order" method="post"
 			enctype="multipart/form-data">
+			<input value="${cartOfCustomer.totalCost}" name="amount" hidden>
 			<table border="1">
 				<tr>
 					<th align="left">Tài khoản</th>
@@ -112,12 +113,11 @@
 							<b>Chọn ảnh kết quả chuyển khoản:</b>
 							<img alt="" src="" id="bookImage" width="150">&nbsp;
 							<input type="file" name="file" accept="image/*" onchange="loadImage(event)" />
-						</div><input type="radio"
-						name="paymentMode" value="transfer"
-						onclick="document.getElementById('uploadVNPAY').style.display='block';" />
-						Thanh toán VNPAY <br>
-						<div id="uploadVNPAY" style="padding-left: 30px; display: none;"><br>
-						</td>
+						</div><input type="radio" name="paymentMode" value="VNPAY"
+						checked="checked"
+						onclick="document.getElementById('uploadDiv').style.display='none';" />
+						Thanh toán VNPAY<br>
+					</td>
 				</tr>
 				<tr>
 					<td></td>

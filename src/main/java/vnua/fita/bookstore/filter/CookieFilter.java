@@ -36,7 +36,7 @@ public class CookieFilter implements Filter{
 		User userInSession = MyUtil.getLoginedUser(session);
 		if(userInSession != null) {
 			session.setAttribute("CHECKED_COOKIE", "CHECKED");
-			chain.doFilter(request2, response);
+			chain.doFilter(request, response);
 			return;
 		}
 		

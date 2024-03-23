@@ -43,8 +43,7 @@ public class OrderDAO {
 		String sql;
 		List<CartItem> orderBookList = order.getOrderBookList();
 		try {
-			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername,
-					jdbcPassword);
+			jdbcConnection = DBConnection.createConnection(jdbcURL, jdbcUsername, jdbcPassword);
 			for (CartItem cartItem : orderBookList) {
 				sql = "SELECT quantity_in_stock FROM tblbook WHERE book_id=?";
 				preStatement = jdbcConnection.prepareStatement(sql);
@@ -131,6 +130,16 @@ public class OrderDAO {
 					}
 				}
 				if("transfer".equals(order.getPaymentMode())) {
+					preStatement = jdbcConnection.prepareStatement(sql3);
+					orderNo = MyUtil.createOrderNo(orderId);
+					preStatement.setString(1, orderNo);
+					preStatement.setInt(2, orderId);
+					insertResult = preStatement.executeUpdate() > 0;
+					if (!insertResult) {
+						throw new SQLException();
+					}
+				}
+				if("VNPAY".equals(order.getPaymentMode())) {
 					preStatement = jdbcConnection.prepareStatement(sql3);
 					orderNo = MyUtil.createOrderNo(orderId);
 					preStatement.setString(1, orderNo);

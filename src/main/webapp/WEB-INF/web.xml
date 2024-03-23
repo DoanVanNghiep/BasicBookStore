@@ -65,9 +65,17 @@
         <servlet-name>vnpayRefund</servlet-name>
         <servlet-class>vnua.fita.bookstore.common.vnpayRefund</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>testVNPAY</servlet-name>
+        <servlet-class>Views/testPaymentVNPAY.jsp</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ajaxServlet</servlet-name>
         <url-pattern>/vnpayajax</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>testVNPAY</servlet-name>
+        <url-pattern>/testVNPAY</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>vnpayQuery</servlet-name>
